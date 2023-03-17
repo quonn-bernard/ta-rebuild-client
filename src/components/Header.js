@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {
   Box,
   Flex,
@@ -11,6 +12,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllCategories } from "../features/categories/categorySlice";
 
 const Links = [
   { slug: "All Services", route: "/services" },
@@ -34,6 +37,18 @@ const NavLink = ({ children, href }) => (
 );
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const { categories, isLoading, isError, message } = useSelector(
+        (state) => state.categories
+      );
+
+      useEffect(() => {
+        if (isError) {
+            console.log(message);
+          }
+          dispatch(getAllCategories())
+      },[dispatch])
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -66,9 +81,9 @@ const Header = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link) => (
-                <NavLink key={link} href={link.route}>
-                  {link.slug}
+              {categories.map((category, index) => (
+                <NavLink key={index} href={`/categories/${category.slug}`}>
+                  {category.name}
                 </NavLink>
               ))}
             </HStack>
