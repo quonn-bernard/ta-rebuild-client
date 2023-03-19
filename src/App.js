@@ -16,10 +16,10 @@ function App() {
         <Header/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/services" element={<ServicesList />} />
-          <Route path="/services/:slug" element={<Services />} />
-          <Route path="/categories/:slug" element={<Categories />} />
-          <Route path="/categories" element={<CategoriesList />} />
+          <Route path={`${process.env.REACT_APP_API_SVC_URL}`} element={<ServicesList />} />
+          <Route path={`${process.env.REACT_APP_API_SVC_URL}:slug`} element={<Services />} />
+          <Route path={`${process.env.REACT_APP_API_CAT_URL}:slug`} element={<Categories />} />
+          <Route path={`${process.env.REACT_APP_API_CAT_URL}`} element={<CategoriesList />} />
           <Route path="/admin" element={<AdminDashbaord />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />

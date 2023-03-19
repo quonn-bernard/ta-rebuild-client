@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -8,18 +8,11 @@ import {
   Button,
   Menu,
   useDisclosure,
-  useColorModeValue,
-  Stack,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { getAllCategories } from "../features/categories/categorySlice";
-
-const Links = [
-  { slug: "All Services", route: "/services" },
-  { slug: "Routine Services", route: "/services/routine-labs" },
-  { slug: "Covid", route: "/services/covid" },
-];
 
 const NavLink = ({ children, href }) => (
   <Link
@@ -37,17 +30,17 @@ const NavLink = ({ children, href }) => (
 );
 
 const Header = () => {
-    const dispatch = useDispatch();
-    const { categories, isLoading, isError, message } = useSelector(
-        (state) => state.categories
-      );
+  const dispatch = useDispatch();
+  const { categories, isError, message } = useSelector(
+    (state) => state.categories
+  );
 
-      useEffect(() => {
-        if (isError) {
-            console.log(message);
-          }
-          dispatch(getAllCategories())
-      },[dispatch])
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+    dispatch(getAllCategories());
+  }, [dispatch, isError, message]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -81,8 +74,11 @@ const Header = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {categories.map((category, index) => (
-                <NavLink key={index} href={`/categories/${category.slug}`}>
+              {categories.map((category) => (
+                <NavLink
+                  key={category._id}
+                  href={`${process.env.REACT_APP_API_CAT_URL}${category.slug}`}
+                >
                   {category.name}
                 </NavLink>
               ))}
@@ -95,7 +91,7 @@ const Header = () => {
                   textDecoration: "none",
                   bg: useColorModeValue("gray.200", "gray.700"),
                 }}
-                href={"/categories"}
+                href={`${process.env.REACT_APP_API_CAT_URL}`}
               >
                 <Button
                   variant={"solid"}
@@ -109,16 +105,6 @@ const Header = () => {
             </Menu>
           </Flex>
         </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
       </Box>
     </>
   );

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const url = process.env.REACT_APP_API_CAT_URL;
+const url = process.env.REACT_APP_API_SVC_URL;
 
-export const getCategories = async () => {
+export const getAllServices = async () => {
     const response = await axios.get(url)
     return response.data
 }
 
-export const getServicesByCategory = async (slug) => {
+export const getServiceBySlug = async (slug) => {
     const response = await axios.get(url + slug)
     return response.data
 }
